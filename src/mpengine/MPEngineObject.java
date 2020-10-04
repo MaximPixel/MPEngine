@@ -2,10 +2,20 @@ package mpengine;
 
 public class MPEngineObject {
 
-    public EngineThread thread;
-    public EngineFrame frame;
+    private static EngineThread thread;
+    private static EngineFrame frame;
 
-    public void start(IEngineInterface loop) {
+    private MPEngineObject() {}
+
+    public static void start(IEngineInterface loop) {
         new Thread(thread = new EngineThread(loop, frame = new EngineFrame())).start();
+    }
+
+    public static EngineThread getThread() {
+        return thread;
+    }
+
+    public static EngineFrame getFrame() {
+        return frame;
     }
 }

@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 public interface IEngineInterface {
 
-    public void updateLoop();
+    void updateLoop();
 
-    public void drawLoop(Canvas canvas, Graphics2D graphics);
+    void drawLoop(Canvas canvas, Graphics2D graphics);
 }

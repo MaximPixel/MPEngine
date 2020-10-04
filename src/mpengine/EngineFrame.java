@@ -12,7 +12,7 @@ public class EngineFrame extends JFrame {
     private final EngineInput input;
 
     public EngineFrame() {
-        setSize(480, 480);
+        setSize(640, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Canvas canvas = new Canvas();

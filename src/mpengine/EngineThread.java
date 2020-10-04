@@ -3,13 +3,14 @@ package mpengine;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
+@SuppressWarnings("BusyWait")
 public class EngineThread extends Thread {
 
     private final static double UPDATE_CAP = 1D / 60D;
     private final IEngineInterface engineInterface;
     private final EngineFrame frame;
-    private boolean fps_change = false;
-    private int fps_count = 0;
+    private boolean fpsChange = false;
+    private int fpsCount = 0;
 
     public EngineThread(IEngineInterface engineInterface, EngineFrame frame) {
         this.engineInterface = engineInterface;
@@ -18,21 +19,17 @@ public class EngineThread extends Thread {
 
     @Override
     public void run() {
-        boolean running = true;
-
-        boolean render = false;
-        double first = 0D;
+        double first;
         double last = System.nanoTime() / 1000000000D;
-        double passed = 0D;
+        double passed;
         double unprocessed = 0D;
 
         double frame = 0D;
         int frames = 0;
-        int fps = 0;
+        int fps;
 
-        while (running) {
-
-            render = false;
+        while (EngineThread.this.frame.isEnabled()) {
+            boolean render = false;
 
             first = System.nanoTime() / 1000000000D;
             passed = first - last;
@@ -44,7 +41,7 @@ public class EngineThread extends Thread {
             while (unprocessed >= UPDATE_CAP) {
 
                 engineInterface.updateLoop();
-                fps_change = false;
+                fpsChange = false;
                 this.frame.getEngineInput().update();
 
                 unprocessed -= UPDATE_CAP;
@@ -52,16 +49,15 @@ public class EngineThread extends Thread {
 
                 if (frame >= 1D) {
                     frame = 0D;
-                    fps = (int) frames;
+                    fps = frames;
                     frames = 0;
 
-                    fps_change = true;
-                    fps_count = fps;
+                    fpsChange = true;
+                    fpsCount = fps;
                 }
             }
 
             if (render) {
-
                 BufferStrategy strategy = this.frame.getBufferStrategy();
 
                 engineInterface.drawLoop(this.frame.getCanvas(), (Graphics2D) strategy.getDrawGraphics());
@@ -81,11 +77,11 @@ public class EngineThread extends Thread {
     }
 
     public boolean isFpsChange() {
-        return fps_change;
+        return fpsChange;
     }
 
     public int getFps() {
-        return fps_count;
+        return fpsCount;
     }
 
     public EngineFrame getFrame() {

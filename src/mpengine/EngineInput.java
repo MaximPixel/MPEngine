@@ -11,15 +11,15 @@ import java.awt.event.MouseMotionListener;
 public class EngineInput implements KeyListener, MouseMotionListener, MouseListener {
 
     public static final int KEYS_COUNT = 256;
-    private boolean[] keys = new boolean[KEYS_COUNT];
+    private final boolean[] keys = new boolean[KEYS_COUNT];
     private boolean[] keys_real = new boolean[KEYS_COUNT];
     private boolean[] keys_last = new boolean[KEYS_COUNT];
-    private char[] keys_chars = new char[KEYS_COUNT];
+    private final char[] keys_chars = new char[KEYS_COUNT];
 
     private Point mousePos = new Point();
 
     public static final int BUTTONS_COUNT = 5;
-    private boolean[] buttons = new boolean[BUTTONS_COUNT];
+    private final boolean[] buttons = new boolean[BUTTONS_COUNT];
     private boolean[] buttons_real = new boolean[BUTTONS_COUNT];
     private boolean[] buttons_last = new boolean[BUTTONS_COUNT];
 
@@ -80,7 +80,7 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     @Override
     public void keyPressed(KeyEvent e) {
         int c = e.getKeyCode();
-        if (c < this.KEYS_COUNT) {
+        if (c < KEYS_COUNT) {
             keys[c] = true;
             keys_real[c] = true;
             keys_chars[c] = e.getKeyChar();
@@ -90,7 +90,7 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     @Override
     public void keyReleased(KeyEvent e) {
         int c = e.getKeyCode();
-        if (c < this.KEYS_COUNT) {
+        if (c < KEYS_COUNT) {
             keys[c] = false;
         }
     }
