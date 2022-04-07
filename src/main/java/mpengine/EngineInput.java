@@ -1,5 +1,8 @@
 package mpengine;
 
+import mpengine.listener.MouseClickEventListener;
+import mpengine.listener.MouseClickListener;
+
 import java.awt.Canvas;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -7,8 +10,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 public class EngineInput implements KeyListener, MouseMotionListener, MouseListener {
+
+    private ArrayList<MouseClickEventListener> mouseClickListeners;
 
     public static final int KEYS_COUNT = 256;
     private final boolean[] keys = new boolean[KEYS_COUNT];
@@ -110,7 +116,10 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent event) {
+        if (mouseClickListeners != null) {
+            mouseClickListeners.forEach(listener -> listener.onClick(event));
+        }
     }
 
     @Override
@@ -130,5 +139,20 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     @Override
     public void mouseReleased(MouseEvent e) {
         buttons[e.getButton()] = false;
+    }
+
+    private void checkMouseClickListeners() {
+        if (mouseClickListeners == null) {
+            mouseClickListeners = new ArrayList<>();
+        }
+    }
+
+    public void addMouseClickListenerEvent(MouseClickEventListener listener) {
+        checkMouseClickListeners();
+        mouseClickListeners.add(listener);
+    }
+
+    public void addMouseClickListener(MouseClickListener listener) {
+        addMouseClickListenerEvent(listener);
     }
 }
