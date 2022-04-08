@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 public interface IEngineInterface {
 
-    void init(EngineFrame engineFrame);
+    void init(Settings settings);
 
     void updateLoop();
 

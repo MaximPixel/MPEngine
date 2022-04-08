@@ -1,7 +1,7 @@
 package mpengine.example;
 
-import mpengine.EngineFrame;
 import mpengine.IEngineInterface;
+import mpengine.Settings;
 
 import java.awt.*;
 
@@ -11,8 +11,8 @@ public class Example implements IEngineInterface {
 	}
 
 	@Override
-	public void init(EngineFrame engineFrame) {
-		engineFrame.getEngineInput().addMouseClickListener(
+	public void init(Settings settings) {
+		settings.getEngineInput().addMouseClickListener(
 				(mouseX, mouseY, button) -> System.out.println(mouseX + " " + mouseY + " " + button)
 		);
 	}

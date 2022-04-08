@@ -5,7 +5,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-public class EngineFrame extends JFrame {
+public class EngineFrame extends JFrame implements Settings {
 
     private final Canvas canvas;
     private final BufferStrategy strategy;
@@ -46,6 +46,7 @@ public class EngineFrame extends JFrame {
         return strategy;
     }
 
+    @Override
     public EngineInput getEngineInput() {
         return input;
     }
