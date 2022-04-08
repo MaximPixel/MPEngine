@@ -1,7 +1,6 @@
 package mpengine;
 
-import mpengine.listener.MouseClickEventListener;
-import mpengine.listener.MouseClickListener;
+import mpengine.listener.*;
 
 import java.awt.Canvas;
 import java.awt.Point;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 
 public class EngineInput implements KeyListener, MouseMotionListener, MouseListener {
     private ArrayList<MouseClickEventListener> mouseClickListeners;
+    private ArrayList<MousePressEventListener> mousePressListeners;
+    private ArrayList<MouseMoveEventListener>  mouseMoveListeners;
 
     public static final int KEYS_COUNT = 256;
     private final boolean[] keys = new boolean[KEYS_COUNT];
@@ -23,7 +24,7 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
 
     private Point mousePos = new Point();
 
-    public static final int BUTTONS_COUNT = 5;
+    public static final int BUTTONS_COUNT = 6;
     private final boolean[] buttons = new boolean[BUTTONS_COUNT];
     private boolean[] buttons_real = new boolean[BUTTONS_COUNT];
     private boolean[] buttons_last = new boolean[BUTTONS_COUNT];
@@ -110,8 +111,11 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        mousePos = e.getPoint();
+    public void mouseMoved(MouseEvent event) {
+        mousePos = event.getPoint();
+        if (mouseMoveListeners != null) {
+            mouseMoveListeners.forEach(listener -> listener.onMove(event));
+        }
     }
 
     @Override
@@ -122,17 +126,18 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        buttons[e.getButton()] = true;
-        buttons_real[e.getButton()] = true;
+    public void mousePressed(MouseEvent event) {
+        buttons[event.getButton()] = true;
+        buttons_real[event.getButton()] = true;
+        if (mousePressListeners != null) {
+            mousePressListeners.forEach(listener -> listener.onPress(event));
+        }
     }
 
     @Override
@@ -140,18 +145,32 @@ public class EngineInput implements KeyListener, MouseMotionListener, MouseListe
         buttons[e.getButton()] = false;
     }
 
-    private void checkMouseClickListeners() {
+    public void addMouseClickListenerEvent(MouseClickEventListener listener) {
         if (mouseClickListeners == null) {
             mouseClickListeners = new ArrayList<>();
         }
-    }
-
-    public void addMouseClickListenerEvent(MouseClickEventListener listener) {
-        checkMouseClickListeners();
         mouseClickListeners.add(listener);
     }
 
     public void addMouseClickListener(MouseClickListener listener) {
         addMouseClickListenerEvent(listener);
+    }
+
+    public void addMousePressListenerEvent(MousePressEventListener listener) {
+        if (mousePressListeners == null) {
+            mousePressListeners = new ArrayList<>();
+        }
+        mousePressListeners.add(listener);
+    }
+
+    public void addMousePressListener(MousePressListener listener) {
+        addMousePressListenerEvent(listener);
+    }
+
+    public void addMouseMoveListenerEvent(MouseMoveEventListener listener) {
+        if (mouseMoveListeners == null) {
+            mouseMoveListeners = new ArrayList<>();
+        }
+        mouseMoveListeners.add(listener);
     }
 }
