@@ -5,7 +5,6 @@ import java.awt.image.BufferStrategy;
 
 @SuppressWarnings("BusyWait")
 public class EngineThread extends Thread {
-
     private final static double UPDATE_CAP = 1D / 60D;
     private final IEngineInterface engineInterface;
     private final EngineFrame frame;

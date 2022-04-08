@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Graphics2D;
 
 public interface IEngineInterface {
-
     void init(Settings settings);
 
     void updateLoop();

@@ -13,7 +13,6 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class EngineInput implements KeyListener, MouseMotionListener, MouseListener {
-
     private ArrayList<MouseClickEventListener> mouseClickListeners;
 
     public static final int KEYS_COUNT = 256;
